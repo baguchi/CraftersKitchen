@@ -115,6 +115,13 @@ obfuscation {
     createRemappingConfiguration(configurations.localRuntime)
 }
 
+repositories {
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
+    maven { url = "https://maven.blamejared.com" }
+}
+
 dependencies {
     // If you wish to declare dependencies against mods, make sure to use the 'mod*' configurations so that they're remapped.
 	// See https://github.com/neoforged/ModDevGradle/blob/main/LEGACY.md#remapping-mod-dependencies for more information.
@@ -125,6 +132,7 @@ dependencies {
     // modCompileOnly "mezz.jei:jei-${mc_version}-neoforge-api:${jei_version}"
     // We add the full version to localRuntime, not runtimeOnly, so that we do not publish a dependency on it
     // modLocalRuntime "mezz.jei:jei-${mc_version}-neoforge:${jei_version}"
+    //jarJar(implementation("com.tterrag.registrate:Registrate:MC1.21-1.3.0+62"))
 
     // Example mod dependency using a mod jar from ./libs with a flat dir repository
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
