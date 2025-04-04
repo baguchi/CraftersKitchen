@@ -40,7 +40,7 @@ public class SandwichBlockItem extends BlockItem {
     public int getUseDuration(ItemStack stack) {
         FoodHolder foodHolder = FoodUtils.readFoodDataFromItemStack(stack);
         if (foodHolder != null) {
-            return super.getUseDuration(stack) + 4 * foodHolder.stack().size();
+            return super.getUseDuration(stack) + 5 * foodHolder.stack().size();
         }
         return super.getUseDuration(stack);
     }
