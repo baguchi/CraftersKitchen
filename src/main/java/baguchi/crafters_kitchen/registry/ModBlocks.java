@@ -46,7 +46,7 @@ public class ModBlocks {
     private static <T extends Block> Supplier<BlockItem> registerBlockItem(final RegistryObject<T> block) {
         return () -> {
             if (Objects.requireNonNull(block.get()) == SANDWICH.get()) {
-                return new SandwichBlockItem(Objects.requireNonNull(block.get()), new Item.Properties().food(Foods.BREAD)) {
+                return new SandwichBlockItem(Objects.requireNonNull(block.get()), new Item.Properties().food(Foods.BREAD).stacksTo(16)) {
                     @Override
                     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
                         super.initializeClient(consumer);

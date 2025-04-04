@@ -1,5 +1,8 @@
 {
   "parent": "builtin/entity",
+  "textures": {
+    "particle": "minecraft:item/bread"
+  },
   "display": {
     "gui": {
       "rotation": [
@@ -9,13 +12,13 @@
       ],
       "translation": [
         0,
-        0,
+        2,
         0
       ],
       "scale": [
-        0.625,
-        0.625,
-        0.625
+        1.5,
+        1.5,
+        1.5
       ]
     },
     "ground": {
@@ -30,9 +33,9 @@
         0
       ],
       "scale": [
-        0.25,
-        0.25,
-        0.25
+        0.6,
+        0.6,
+        0.6
       ]
     },
     "head": {
@@ -64,9 +67,9 @@
         0
       ],
       "scale": [
-        0.5,
-        0.5,
-        0.5
+        0.6,
+        0.6,
+        0.6
       ]
     },
     "thirdperson_righthand": {
@@ -77,13 +80,13 @@
       ],
       "translation": [
         0,
-        2.5,
-        0
+        2,
+        5
       ],
       "scale": [
-        0.375,
-        0.375,
-        0.375
+        0.6,
+        0.6,
+        0.6
       ]
     },
     "firstperson_righthand": {
@@ -94,13 +97,13 @@
       ],
       "translation": [
         0,
-        0,
+        5,
         0
       ],
       "scale": [
-        0.4,
-        0.4,
-        0.4
+        0.6,
+        0.6,
+        0.6
       ]
     }
   }

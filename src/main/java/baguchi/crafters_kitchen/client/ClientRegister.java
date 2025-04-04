@@ -3,6 +3,7 @@ package baguchi.crafters_kitchen.client;
 
 import baguchi.crafters_kitchen.CraftersKitchen;
 import baguchi.crafters_kitchen.client.render.block.SandwichBlockEntityRender;
+import baguchi.crafters_kitchen.client.render.model.StewModel;
 import baguchi.crafters_kitchen.registry.ModBlockEntitys;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -15,4 +16,10 @@ public class ClientRegister {
     public static void registerEntityRenders(EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(ModBlockEntitys.SANDWICH.get(), SandwichBlockEntityRender::new);
     }
+
+    @SubscribeEvent
+    public static void registerEntityRenders(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(StewModel.LAYER_LOCATION, StewModel::createBodyLayer);
+    }
+
 }

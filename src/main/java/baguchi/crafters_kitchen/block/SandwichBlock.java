@@ -1,11 +1,9 @@
 package baguchi.crafters_kitchen.block;
 
 import baguchi.crafters_kitchen.blockentity.SandwichBlockEntity;
-import baguchi.crafters_kitchen.registry.ModBlockEntitys;
 import baguchi.crafters_kitchen.registry.ModBlocks;
 import baguchi.crafters_kitchen.utils.FoodUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.Containers;
@@ -17,8 +15,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 public class SandwichBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    protected static final VoxelShape SHAPE = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 6.0D, 14.0D);
+    protected static final VoxelShape SHAPE = Block.box(5.0D, 0.0D, 5.0D, 11.0D, 6.0D, 11.0D);
 
 
     public SandwichBlock(BlockBehaviour.Properties properties) {
@@ -58,13 +58,12 @@ public class SandwichBlock extends BaseEntityBlock {
         if (tileEntity instanceof SandwichBlockEntity sandwichBlockEntity) {
             ItemStack heldStack = player.getItemInHand(handIn);
 
-            if (player.isShiftKeyDown()) {
-                if (sandwichBlockEntity.addFoodDecoItem(heldStack.copy(), hit.getLocation().subtract(pos.getCenter()))) {
-                    worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F);
-                    return InteractionResult.SUCCESS;
-                }
+
+            if (sandwichBlockEntity.addFoodDecoItem(heldStack.copy(), hit.getLocation().subtract(pos.getCenter()))) {
+                worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F);
+                return InteractionResult.SUCCESS;
             }
-            if (heldStack.getFoodProperties(player) != null && sandwichBlockEntity.addFoodItem(player.getAbilities().instabuild ? heldStack.copy() : heldStack, hit.getLocation().subtract(pos.getCenter()))) {
+            if (!heldStack.is(ModBlocks.SANDWICH.get().asItem()) && heldStack.getFoodProperties(player) != null && sandwichBlockEntity.addFoodItem(player.getAbilities().instabuild ? heldStack.copy() : heldStack, hit.getLocation().subtract(pos.getCenter()))) {
                 worldIn.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F);
                 return InteractionResult.SUCCESS;
             }
@@ -88,7 +87,9 @@ public class SandwichBlock extends BaseEntityBlock {
             BlockEntity tileEntity = worldIn.getBlockEntity(pos);
             if (tileEntity instanceof SandwichBlockEntity sandwichBlockEntity) {
                 ItemStack stack = new ItemStack(ModBlocks.SANDWICH.get());
-                FoodUtils.writeFoodData(stack.getOrCreateTag(), sandwichBlockEntity.getFoodHolder());
+                if (sandwichBlockEntity.getFoodHolder() != null) {
+                    FoodUtils.writeFoodData(stack.getOrCreateTag(), sandwichBlockEntity.getFoodHolder());
+                }
                 Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), stack);
                 worldIn.updateNeighbourForOutputSignal(pos, this);
             }
@@ -114,20 +115,13 @@ public class SandwichBlock extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return ModBlockEntitys.SANDWICH.get().create(pos, state);
+        return new SandwichBlockEntity(pos, state);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState fluid = context.getLevel().getFluidState(context.getClickedPos());
         return this.defaultBlockState().setValue(FACING, context.getHorizontalDirection().getOpposite());
-    }
-
-    @Override
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        return facing == Direction.DOWN && !stateIn.canSurvive(worldIn, currentPos)
-                ? Blocks.AIR.defaultBlockState()
-                : super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
     }
 
     @Override

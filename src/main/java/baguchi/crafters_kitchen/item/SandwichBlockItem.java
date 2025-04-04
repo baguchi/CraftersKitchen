@@ -58,6 +58,7 @@ public class SandwichBlockItem extends BlockItem {
         FoodHolder foodHolder2 = new FoodHolder(arrayList, arrayList2);
         arrayList.add(new FoodMaterial(Items.GOLDEN_APPLE.getDefaultInstance(), Vec3.ZERO));
         arrayList.add(new FoodMaterial(Items.GOLDEN_CARROT.getDefaultInstance(), Vec3.ZERO));
+        arrayList.add(new FoodMaterial(Items.BREAD.getDefaultInstance(), Vec3.ZERO));
         FoodUtils.writeFoodDataToItemStack(stack2, foodHolder2);
         items.add(stack2);
         return items;

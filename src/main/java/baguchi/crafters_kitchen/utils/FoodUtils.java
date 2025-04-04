@@ -8,6 +8,7 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 import static baguchi.crafters_kitchen.CraftersKitchen.LOGGER;
 
@@ -23,7 +24,7 @@ public class FoodUtils {
     @Nullable
     public static FoodHolder readFoodDataFromItemStack(ItemStack stack) {
 
-        final FoodHolder[] foodHolder = {null};
+        final FoodHolder[] foodHolder = {new FoodHolder(new ArrayList<>(), new ArrayList<>())};
         CompoundTag tag = stack.getTag();
         if (tag != null && tag.contains("food_data", 10)) {
             DataResult<FoodHolder> dataresult = FoodHolder.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, tag.get("food_data")));
@@ -44,7 +45,7 @@ public class FoodUtils {
     @Nullable
     public static FoodHolder readFoodData(CompoundTag tag) {
 
-        final FoodHolder[] foodHolder = {null};
+        final FoodHolder[] foodHolder = {new FoodHolder(new ArrayList<>(), new ArrayList<>())};
         if (tag != null && tag.contains("food_data", 10)) {
             DataResult<FoodHolder> dataresult = FoodHolder.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, tag.get("food_data")));
             dataresult.resultOrPartial(LOGGER::error).ifPresent(foodHolder1 -> foodHolder[0] = foodHolder1);

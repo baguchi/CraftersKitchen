@@ -37,14 +37,16 @@ public class SandwichBlockEntity extends SyncedBlockEntity {
     public void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
 
-        FoodUtils.writeFoodData(compound, foodHolder);
+        if (foodHolder != null) {
+            FoodUtils.writeFoodData(compound, foodHolder);
+        }
     }
 
     public boolean addFoodItem(ItemStack itemStack, Vec3 vec3) {
         if (!itemStack.isEmpty() && foodHolder.stack().size() < 8) {
             List<FoodMaterial> foodMaterials = new ArrayList<>();
             foodMaterials.addAll(foodHolder.stack());
-            foodMaterials.add(new FoodMaterial(itemStack, vec3));
+            foodMaterials.add(new FoodMaterial(itemStack.split(1), vec3));
             foodHolder = new FoodHolder(foodMaterials, foodHolder.foodDecorations());
             inventoryChanged();
             return true;
